@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Vehículos - AutoConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-500: #2563EB;
+            --primary-600: #1D4ED8;
+            --primary-100: #DBEAFE;
+            --secondary-500: #10B981;
+            --secondary-100: #D1FAE5;
+            --warning-500: #F59E0B;
+            --warning-100: #FEF3C7;
+            --danger-500: #EF4444;
+            --danger-100: #FEE2E2;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --spacing-1: 0.25rem;
+            --spacing-2: 0.5rem;
+            --spacing-3: 0.75rem;
+            --spacing-4: 1rem;
+            --spacing-6: 1.5rem;
+            --spacing-8: 2rem;
+            --border-radius: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-500);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-500);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+        }
+
+        .btn {
+            padding: var(--spacing-3) var(--spacing-6);
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-2);
+        }
+
+        .btn-primary {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-600);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--gray-600);
+            border: 2px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-8) var(--spacing-4);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-8);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .page-subtitle {
+            color: var(--gray-600);
+            font-size: 1.125rem;
+        }
+
+        .account-info {
+            background: var(--primary-100);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .account-details {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+        }
+
+        .account-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-500);
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .account-text h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .account-text p {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .plan-badge {
+            background: var(--warning-500);
+            color: white;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .plan-badge.premium {
+            background: var(--secondary-500);
+        }
+
+        .vehicles-section {
+            margin-bottom: var(--spacing-8);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--spacing-6);
+        }
+
+        .vehicle-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .vehicle-card.active {
+            border: 2px solid var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .vehicle-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gray-200);
+            position: relative;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .vehicle-status {
+            position: absolute;
+            top: var(--spacing-3);
+            right: var(--spacing-3);
+            background: var(--secondary-500);
+            color: white;
+            padding: var(--spacing-1) var(--spacing-2);
+            border-radius: var(--border-radius);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .vehicle-content {
+            padding: var(--spacing-6);
+        }
+
+        .vehicle-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .vehicle-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .vehicle-year {
+            background: var(--primary-100);
+            color: var(--primary-700);
+            padding: var(--spacing-1) var(--spacing-2);
+            border-radius: var(--border-radius);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .vehicle-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+            font-size: 0.875rem;
+        }
+
+        .meta-item {
+            color: var(--gray-600);
+        }
+
+        .meta-item strong {
+            color: var(--gray-800);
+        }
+
+        .vehicle-actions {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: var(--spacing-2) var(--spacing-3);
+            border-radius: var(--border-radius);
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn.primary {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .action-btn.outline {
+            background: transparent;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+
+        .action-btn.danger {
+            background: var(--danger-100);
+            color: var(--danger-600);
+            border: 1px solid var(--danger-300);
+        }
+
+        .add-vehicle-card {
+            background: var(--gray-100);
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-8);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 300px;
+        }
+
+        .add-vehicle-card:hover {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .add-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gray-300);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gray-500);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .add-vehicle-card:hover .add-icon {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .add-text {
+            text-align: center;
+        }
+
+        .add-text h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .add-text p {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        .history-section {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            padding: var(--spacing-6);
+        }
+
+        .history-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .history-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+        }
+
+        .history-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--warning-100);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--warning-500);
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-4);
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+            padding: var(--spacing-4);
+            background: var(--gray-50);
+            border-radius: var(--border-radius-lg);
+            transition: all 0.2s ease;
+        }
+
+        .history-item:hover {
+            background: var(--primary-50);
+        }
+
+        .history-vehicle {
+            flex: 1;
+        }
+
+        .history-vehicle-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .history-vehicle-details {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .history-date {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            text-align: right;
+        }
+
+        .restore-btn {
+            background: var(--warning-500);
+            color: white;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: var(--border-radius);
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .restore-btn:hover {
+            background: var(--warning-600);
+            transform: translateY(-1px);
+        }
+
+        .upgrade-banner {
+            background: linear-gradient(135deg, var(--secondary-500) 0%, var(--secondary-600) 100%);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-8);
+            color: white;
+            text-align: center;
+        }
+
+        .upgrade-banner h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .upgrade-banner p {
+            margin-bottom: var(--spacing-4);
+            opacity: 0.9;
+        }
+
+        .upgrade-btn {
+            background: white;
+            color: var(--secondary-600);
+            padding: var(--spacing-3) var(--spacing-6);
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .upgrade-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: var(--spacing-4) var(--spacing-3);
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .account-info {
+                flex-direction: column;
+                gap: var(--spacing-4);
+                text-align: center;
+            }
+            
+            .vehicles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: var(--spacing-3);
+                align-items: flex-start;
+            }
+            
+            .history-item {
+                flex-direction: column;
+                text-align: center;
+                gap: var(--spacing-3);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🚗</div>
+                <span>AutoConnect</span>
+            </div>
+            
+            <div class="header-actions">
+                <button class="btn btn-outline">Configuración</button>
+                <button class="btn btn-primary">Mi Perfil</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Gestión de Vehículos</h1>
+            <p class="page-subtitle">Administra todos tus vehículos desde un solo lugar</p>
+        </div>
+
+        <div class="account-info">
+            <div class="account-details">
+                <div class="account-icon">👤</div>
+                <div class="account-text">
+                    <h3>Carlos Martínez</h3>
+                    <p>Miembro desde Enero 2024</p>
+                </div>
+            </div>
+            <div class="plan-badge">Plan Gratuito</div>
+        </div>
+
+        <div class="upgrade-banner">
+            <h3>🚀 Mejora a Premium</h3>
+            <p>Registra hasta 5 vehículos y accede a funciones exclusivas</p>
+            <button class="upgrade-btn">Actualizar Ahora</button>
+        </div>
+
+        <div class="vehicles-section">
+            <div class="section-header">
+                <h2 class="section-title">Mis Vehículos (1/1)</h2>
+                <button class="btn btn-primary">+ Agregar Vehículo</button>
+            </div>
+
+            <div class="vehicles-grid">
+                <div class="vehicle-card active">
+                    <div class="vehicle-image">
+                        <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=350&h=200&fit=crop" alt="Toyota Corolla">
+                        <div class="vehicle-status">Activo</div>
+                    </div>
+                    <div class="vehicle-content">
+                        <div class="vehicle-header">
+                            <h3 class="vehicle-name">Toyota Corolla</h3>
+                            <span class="vehicle-year">2022</span>
+                        </div>
+                        
+                        <div class="vehicle-meta">
+                            <div class="meta-item">
+                                <strong>País:</strong> Japón
+                            </div>
+                            <div class="meta-item">
+                                <strong>Combustible:</strong> Híbrido
+                            </div>
+                            <div class="meta-item">
+                                <strong>Visitas:</strong> 1,247
+                            </div>
+                            <div class="meta-item">
+                                <strong>Me gusta:</strong> 89
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-actions">
+                            <button class="action-btn primary">Ver Perfil</button>
+                            <button class="action-btn outline">Editar</button>
+                            <button class="action-btn danger">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-vehicle-card">
+                    <div class="add-icon">+</div>
+                    <div class="add-text">
+                        <h3>Agregar Nuevo Vehículo</h3>
+                        <p>Plan gratuito: máximo 1 vehículo<br>Actualiza a Premium para más</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <div class="history-header">
+                <h3 class="history-title">
+                    <div class="history-icon">🕐</div>
+                    Historial de Vehículos
+                </h3>
+            </div>
+
+            <div class="history-list">
+                <div class="history-item">
+                    <div class="history-vehicle">
+                        <div class="history-vehicle-name">Honda Civic 2019</div>
+                        <div class="history-vehicle-details">Motor 1.5L Turbo • Gasolina • Japón</div>
+                    </div>
+                    <div class="history-date">
+                        Eliminado<br>15 Dic 2024
+                    </div>
+                    <button class="restore-btn" onclick="restoreVehicle('honda-civic-2019')">
+                        Restaurar
+                    </button>
+                </div>
+
+                <div class="history-item">
+                    <div class="history-vehicle">
+                        <div class="history-vehicle-name">Volkswagen Golf 2018</div>
+                        <div class="history-vehicle-details">Motor 1.4L TSI • Gasolina • Alemania</div>
+                    </div>
+                    <div class="history-date">
+                        Eliminado<br>28 Nov 2024
+                    </div>
+                    <button class="restore-btn" onclick="restoreVehicle('vw-golf-2018')">
+                        Restaurar
+                    </button>
+                </div>
+
+                <div class="history-item">
+                    <div class="history-vehicle">
+                        <div class="history-vehicle-name">Ford Focus 2017</div>
+                        <div class="history-vehicle-details">Motor 1.6L • Gasolina • Estados Unidos</div>
+                    </div>
+                    <div class="history-date">
+                        Eliminado<br>05 Oct 2024
+                    </div>
+                    <button class="restore-btn" onclick="restoreVehicle('ford-focus-2017')">
+                        Restaurar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Función para restaurar vehículo
+        function restoreVehicle(vehicleId) {
+            if (confirm('¿Estás seguro de que quieres restaurar este vehículo? Esto reemplazará tu vehículo actual.')) {
+                // Simular restauración
+                const vehicleData = {
+                    'honda-civic-2019': {
+                        name: 'Honda Civic',
+                        year: '2019',
+                        engine: '1.5L Turbo',
+                        fuel: 'Gasolina',
+                        country: 'Japón'
+                    },
+                    'vw-golf-2018': {
+                        name: 'Volkswagen Golf',
+                        year: '2018',
+                        engine: '1.4L TSI',
+                        fuel: 'Gasolina',
+                        country: 'Alemania'
+                    },
+                    'ford-focus-2017': {
+                        name: 'Ford Focus',
+                        year: '2017',
+                        engine: '1.6L',
+                        fuel: 'Gasolina',
+                        country: 'Estados Unidos'
+                    }
+                };
+
+                const vehicle = vehicleData[vehicleId];
+                if (vehicle) {
+                    // Actualizar la tarjeta del vehículo actual
+                    document.querySelector('.vehicle-name').textContent = vehicle.name;
+                    document.querySelector('.vehicle-year').textContent = vehicle.year;
+                    
+                    // Mostrar notificación de éxito
+                    showNotification(`${vehicle.name} ${vehicle.year} ha sido restaurado correctamente`, 'success');
+                    
+                    // Remover el elemento del historial
+                    event.target.closest('.history-item').remove();
+                }
+            }
+        }
+
+        // Función para mostrar notificaciones
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'var(--secondary-500)' : 'var(--primary-500)'};
+                color: white;
+                padding: var(--spacing-4) var(--spacing-6);
+                border-radius: var(--border-radius);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Agregar estilos para las animaciones
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Funcionalidad de upgrade de plan
+        document.querySelector('.upgrade-btn').addEventListener('click', function() {
+            alert('¡Pronto podrás actualizar tu plan! Mantente atento a nuestras novedades.');
+        });
+
+        // Animación de entrada para las tarjetas
+        const cards = document.querySelectorAll('.vehicle-card, .add-vehicle-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    </script>
+</body>
+</html>

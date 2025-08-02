@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Vehículo - AutoConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-500: #2563EB;
+            --primary-600: #1D4ED8;
+            --primary-100: #DBEAFE;
+            --secondary-500: #10B981;
+            --secondary-100: #D1FAE5;
+            --danger-500: #EF4444;
+            --warning-500: #F59E0B;
+            --warning-100: #FEF3C7;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --spacing-2: 0.5rem;
+            --spacing-3: 0.75rem;
+            --spacing-4: 1rem;
+            --spacing-6: 1.5rem;
+            --spacing-8: 2rem;
+            --border-radius: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--gray-50);
+            min-height: 100vh;
+            color: var(--gray-900);
+        }
+
+        .header {
+            background: white;
+            box-shadow: var(--shadow);
+            padding: var(--spacing-4) 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-500);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-500);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .progress-bar {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 var(--spacing-8);
+        }
+
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .progress-step {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: var(--primary-500);
+            transform: scale(1.3);
+        }
+
+        .progress-step.completed {
+            background: var(--secondary-500);
+        }
+
+        .progress-line {
+            flex: 1;
+            height: 2px;
+            background: var(--gray-300);
+            margin: 0 var(--spacing-2);
+        }
+
+        .progress-line.completed {
+            background: var(--secondary-500);
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: var(--spacing-8) auto;
+            padding: 0 var(--spacing-4);
+        }
+
+        .form-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: var(--spacing-8);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: var(--spacing-8);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .form-subtitle {
+            color: var(--gray-600);
+            font-size: 1rem;
+        }
+
+        .form-section {
+            margin-bottom: var(--spacing-8);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-6);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-100);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-500);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-6);
+        }
+
+        .form-grid.cols-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .form-grid.cols-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: var(--spacing-2);
+            font-size: 0.875rem;
+        }
+
+        .form-label.required::after {
+            content: ' *';
+            color: var(--danger-500);
+        }
+
+        .form-input {
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-select {
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .vehicle-preview {
+            background: var(--gray-50);
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-6);
+            text-align: center;
+            margin-top: var(--spacing-4);
+        }
+
+        .vehicle-preview.filled {
+            border: 2px solid var(--secondary-500);
+            background: var(--secondary-100);
+        }
+
+        .vehicle-info {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .vehicle-details {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .photo-upload-section {
+            border: 2px dashed var(--primary-300);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-8);
+            text-align: center;
+            background: var(--primary-50);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--primary-500);
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-4);
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .upload-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .upload-subtitle {
+            color: var(--gray-600);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            padding: var(--spacing-3) var(--spacing-6);
+            background: var(--primary-500);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .upload-btn:hover {
+            background: var(--primary-600);
+            transform: translateY(-1px);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-500);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-remove {
+            position: absolute;
+            top: var(--spacing-2);
+            right: var(--spacing-2);
+            width: 24px;
+            height: 24px;
+            background: var(--danger-500);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        .recommendations {
+            background: var(--warning-100);
+            border: 1px solid var(--warning-500);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-4);
+            margin-top: var(--spacing-4);
+        }
+
+        .recommendations-title {
+            font-weight: 600;
+            color: var(--warning-500);
+            margin-bottom: var(--spacing-2);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .recommendations ul {
+            margin-left: var(--spacing-4);
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .recommendations li {
+            margin-bottom: var(--spacing-2);
+        }
+
+        .btn {
+            padding: var(--spacing-4) var(--spacing-8);
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-2);
+        }
+
+        .btn-primary {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-600);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--gray-600);
+            border: 2px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-8);
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 0 var(--spacing-3);
+            }
+            
+            .form-card {
+                padding: var(--spacing-6);
+            }
+            
+            .form-grid.cols-2,
+            .form-grid.cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🚗</div>
+                <span>AutoConnect</span>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-steps">
+                    <div class="progress-step completed"></div>
+                    <div class="progress-line completed"></div>
+                    <div class="progress-step active"></div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step"></div>
+                </div>
+            </div>
+            
+            <div style="width: 120px;"></div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="form-card">
+            <div class="form-header">
+                <h1 class="form-title">Registra tu vehículo</h1>
+                <p class="form-subtitle">Añade la información de tu vehículo para personalizar tu experiencia</p>
+            </div>
+
+            <form id="vehicleForm">
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <div class="section-icon">🚗</div>
+                        Información del Vehículo
+                    </h2>
+                    
+                    <div class="form-grid">
+                        <div class="form-grid cols-2">
+                            <div class="form-group">
+                                <label class="form-label required">Marca</label>
+                                <select class="form-select" id="marca" required>
+                                    <option value="">Selecciona la marca</option>
+                                    <option value="toyota">Toyota</option>
+                                    <option value="honda">Honda</option>
+                                    <option value="ford">Ford</option>
+                                    <option value="volkswagen">Volkswagen</option>
+                                    <option value="chevrolet">Chevrolet</option>
+                                    <option value="nissan">Nissan</option>
+                                    <option value="hyundai">Hyundai</option>
+                                    <option value="kia">KIA</option>
+                                    <option value="mazda">Mazda</option>
+                                    <option value="subaru">Subaru</option>
+                                    <option value="bmw">BMW</option>
+                                    <option value="mercedes">Mercedes-Benz</option>
+                                    <option value="audi">Audi</option>
+                                    <option value="seat">SEAT</option>
+                                    <option value="renault">Renault</option>
+                                    <option value="peugeot">Peugeot</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label required">Modelo</label>
+                                <select class="form-select" id="modelo" required disabled>
+                                    <option value="">Primero selecciona la marca</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid cols-3">
+                            <div class="form-group">
+                                <label class="form-label required">Año</label>
+                                <select class="form-select" required>
+                                    <option value="">Año</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2016">2016</option>
+                                    <option value="2015">2015</option>
+                                    <option value="older">Anterior a 2015</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label required">País de Fabricación</label>
+                                <select class="form-select" required>
+                                    <option value="">País</option>
+                                    <option value="JP">🇯🇵 Japón</option>
+                                    <option value="DE">🇩🇪 Alemania</option>
+                                    <option value="US">🇺🇸 Estados Unidos</option>
+                                    <option value="KR">🇰🇷 Corea del Sur</option>
+                                    <option value="ES">🇪🇸 España</option>
+                                    <option value="FR">🇫🇷 Francia</option>
+                                    <option value="IT">🇮🇹 Italia</option>
+                                    <option value="UK">🇬🇧 Reino Unido</option>
+                                    <option value="MX">🇲🇽 México</option>
+                                    <option value="BR">🇧🇷 Brasil</option>
+                                    <option value="CN">🇨🇳 China</option>
+                                    <option value="IN">🇮🇳 India</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Versión/Trim</label>
+                                <input type="text" class="form-input" placeholder="EX, Sport, etc.">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vehicle-preview" id="vehiclePreview">
+                        <div class="vehicle-info">Vista previa de tu vehículo</div>
+                        <div class="vehicle-details">Completa la información para ver el resumen</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <div class="section-icon">📸</div>
+                        Fotos del Vehículo
+                    </h2>
+                    
+                    <div class="photo-upload-section" id="uploadSection">
+                        <div class="upload-icon">📷</div>
+                        <h3 class="upload-title">Sube fotos de tu vehículo</h3>
+                        <p class="upload-subtitle">Añade hasta 8 fotos para mostrar tu vehículo a la comunidad</p>
+                        
+                        <input type="file" class="file-input" id="fileInput" multiple accept="image/*">
+                        <button type="button" class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                            Seleccionar fotos
+                        </button>
+                    </div>
+
+                    <div class="photo-grid" id="photoGrid" style="display: none;">
+                        <!-- Las fotos aparecerán aquí -->
+                    </div>
+
+                    <div class="recommendations">
+                        <div class="recommendations-title">
+                            💡 Consejos para mejores fotos
+                        </div>
+                        <ul>
+                            <li>Toma fotos en buena iluminación, preferiblemente luz natural</li>
+                            <li>Incluye vista frontal, trasera, lateral y interior</li>
+                            <li>Muestra detalles importantes como el motor o características especiales</li>
+                            <li>Evita reflejos y asegúrate de que el vehículo esté limpio</li>
+                            <li>Las fotos de alta calidad generan más interés</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" style="flex: 1;">
+                        ← Volver
+                    </button>
+                    <a href="04-preferencias.html" class="btn btn-primary" style="flex: 2;">
+                        Continuar →
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Base de datos de modelos por marca
+        const modelosPorMarca = {
+            toyota: ['Corolla', 'Camry', 'RAV4', 'Highlander', 'Prius', 'Yaris', 'C-HR', 'Land Cruiser', 'Hilux'],
+            honda: ['Civic', 'Accord', 'CR-V', 'HR-V', 'Pilot', 'Fit', 'Ridgeline', 'Passport'],
+            ford: ['Focus', 'Fiesta', 'Mustang', 'Explorer', 'F-150', 'Escape', 'Edge', 'Bronco'],
+            volkswagen: ['Golf', 'Jetta', 'Passat', 'Tiguan', 'Atlas', 'Polo', 'Arteon', 'ID.4'],
+            chevrolet: ['Spark', 'Sonic', 'Cruze', 'Malibu', 'Equinox', 'Traverse', 'Silverado', 'Camaro'],
+            nissan: ['Sentra', 'Altima', 'Rogue', 'Pathfinder', 'Frontier', 'Titan', 'Leaf', 'Ariya'],
+            hyundai: ['Elantra', 'Sonata', 'Tucson', 'Santa Fe', 'Palisade', 'Kona', 'Ioniq', 'Genesis'],
+            kia: ['Rio', 'Forte', 'Optima', 'Sportage', 'Sorento', 'Telluride', 'Soul', 'Stinger'],
+            mazda: ['Mazda3', 'Mazda6', 'CX-3', 'CX-5', 'CX-9', 'MX-5', 'CX-30'],
+            subaru: ['Impreza', 'Legacy', 'Outback', 'Forester', 'Ascent', 'WRX', 'BRZ'],
+            bmw: ['Serie 1', 'Serie 3', 'Serie 5', 'X1', 'X3', 'X5', 'Z4', 'i3', 'i4'],
+            mercedes: ['Clase A', 'Clase C', 'Clase E', 'GLA', 'GLC', 'GLE', 'EQC', 'AMG GT'],
+            audi: ['A3', 'A4', 'A6', 'Q3', 'Q5', 'Q7', 'TT', 'e-tron'],
+            seat: ['Ibiza', 'Leon', 'Arona', 'Ateca', 'Tarraco', 'Cupra Born'],
+            renault: ['Clio', 'Megane', 'Kadjar', 'Koleos', 'Captur', 'Zoe'],
+            peugeot: ['208', '308', '3008', '5008', '2008', 'e-208']
+        };
+
+        // Funcionalidad de selección de marca y modelo
+        const marcaSelect = document.getElementById('marca');
+        const modeloSelect = document.getElementById('modelo');
+        const vehiclePreview = document.getElementById('vehiclePreview');
+
+        marcaSelect.addEventListener('change', function() {
+            const marcaSeleccionada = this.value;
+            modeloSelect.innerHTML = '<option value="">Selecciona el modelo</option>';
+            
+            if (marcaSeleccionada && modelosPorMarca[marcaSeleccionada]) {
+                modeloSelect.disabled = false;
+                modelosPorMarca[marcaSeleccionada].forEach(modelo => {
+                    const option = document.createElement('option');
+                    option.value = modelo.toLowerCase();
+                    option.textContent = modelo;
+                    modeloSelect.appendChild(option);
+                });
+            } else {
+                modeloSelect.disabled = true;
+            }
+            
+            updateVehiclePreview();
+        });
+
+        modeloSelect.addEventListener('change', updateVehiclePreview);
+
+        function updateVehiclePreview() {
+            const marca = marcaSelect.value;
+            const modelo = modeloSelect.value;
+            const año = document.querySelector('select[required]').value;
+            
+            if (marca && modelo) {
+                vehiclePreview.classList.add('filled');
+                vehiclePreview.innerHTML = `
+                    <div class="vehicle-info">${marcaSelect.options[marcaSelect.selectedIndex].text} ${modeloSelect.options[modeloSelect.selectedIndex].text}</div>
+                    <div class="vehicle-details">${año ? año + ' • ' : ''}Configuración personalizada para tu modelo</div>
+                `;
+            } else {
+                vehiclePreview.classList.remove('filled');
+                vehiclePreview.innerHTML = `
+                    <div class="vehicle-info">Vista previa de tu vehículo</div>
+                    <div class="vehicle-details">Completa la información para ver el resumen</div>
+                `;
+            }
+        }
+
+        // Funcionalidad de subida de fotos
+        const fileInput = document.getElementById('fileInput');
+        const photoGrid = document.getElementById('photoGrid');
+        let uploadedPhotos = [];
+
+        fileInput.addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            
+            files.forEach(file => {
+                if (uploadedPhotos.length < 8) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        uploadedPhotos.push({
+                            file: file,
+                            url: e.target.result
+                        });
+                        renderPhotos();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        function renderPhotos() {
+            if (uploadedPhotos.length > 0) {
+                photoGrid.style.display = 'grid';
+                photoGrid.innerHTML = '';
+                
+                uploadedPhotos.forEach((photo, index) => {
+                    const photoItem = document.createElement('div');
+                    photoItem.className = 'photo-item';
+                    photoItem.innerHTML = `
+                        <img src="${photo.url}" alt="Foto ${index + 1}">
+                        <button type="button" class="photo-remove" onclick="removePhoto(${index})">×</button>
+                    `;
+                    photoGrid.appendChild(photoItem);
+                });
+
+                // Agregar botón para más fotos si no se ha alcanzado el límite
+                if (uploadedPhotos.length < 8) {
+                    const addMoreItem = document.createElement('div');
+                    addMoreItem.className = 'photo-item';
+                    addMoreItem.style.cursor = 'pointer';
+                    addMoreItem.innerHTML = `
+                        <div style="font-size: 2rem; color: var(--gray-400);">+</div>
+                    `;
+                    addMoreItem.onclick = () => fileInput.click();
+                    photoGrid.appendChild(addMoreItem);
+                }
+            } else {
+                photoGrid.style.display = 'none';
+            }
+        }
+
+        function removePhoto(index) {
+            uploadedPhotos.splice(index, 1);
+            renderPhotos();
+        }
+
+        // Validación de año
+        const currentYear = new Date().getFullYear();
+        const yearSelect = document.querySelector('select[required]');
+        yearSelect.addEventListener('change', updateVehiclePreview);
+    </script>
+</body>
+</html>
